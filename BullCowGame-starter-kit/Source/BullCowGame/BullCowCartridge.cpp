@@ -9,9 +9,7 @@ void UBullCowCartridge::BeginPlay() // When the game starts
     PrintLine(TEXT("Guess the 6 letter word")); // TODO: Remove magic number
     PrintLine(TEXT("Let's try to find out the word..."));
 
-    HiddenWord = TEXT("number");
-    
-    //Set lives
+    SetupGame();
 }
 
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
@@ -32,6 +30,9 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
         
         // Subtract a life
 
+        // Are there remaining lives?
+        // No: You lose, print lost message, ask if play again
+
         // Is the word length correct?
         // No: Remind the word length
 
@@ -41,4 +42,10 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
         // Calculate hints based on Input 
         // and give feedback to player
     }
+}
+
+void UBullCowCartridge::SetupGame()
+{
+    HiddenWord = TEXT("number");
+    Lives = 4;
 }
