@@ -17,13 +17,12 @@ public:
 	void SetupGame();
 	void EndGame();
 	void ProcessGuess(const FString& Guess);
-	bool IsIsogram(const FString& Word) const;
-	TArray<FString> GetValidWords(const TArray<FString>& WordList) const;
+	static bool IsIsogram(const FString& Word);
 
 // Your declarations go below!
 private:
 	FString HiddenWord;
 	int32 Lives;
 	bool bGameOver;
-	TArray<FString> Words;
+	TArray<FString> Isograms;
 };
