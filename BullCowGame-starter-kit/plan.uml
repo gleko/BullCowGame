@@ -1,0 +1,17 @@
+@startuml
+start
+:Start the game;
+:Set lives\nSet up the hidden word;
+repeat
+  if (Remaining lives == 0) then (yes)
+    #red:You lose;
+    stop
+  endif
+  :Get user input;
+backward:Evaluate input\nGive hints\nSubtract a life;
+repeat while (word is correct?) is (no)
+->yes;
+#palegreen:You win;
+stop
+
+@enduml
