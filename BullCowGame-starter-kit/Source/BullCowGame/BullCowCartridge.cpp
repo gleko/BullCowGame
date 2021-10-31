@@ -19,43 +19,7 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
     }
     else
     {
-        if (Input == HiddenWord)
-        {
-            PrintLine(TEXT("You have guessed correctly"));
-            EndGame();
-
-            // Play again?
-            // Yes: Reset game
-            // No: Quit game
-        }
-        else
-        {
-            PrintLine(TEXT("%i lives remaining"), --Lives);
-            if (HiddenWord.Len() != Input.Len())
-            {
-                PrintLine(TEXT("The length of the word is incorrect\nLength should be %i"), HiddenWord.Len());
-            }
-        
-            if (Lives <= 0)
-            {
-                PrintLine(TEXT("You don't have more lives"));
-                EndGame();
-            }
-
-            // Subtract a life
-
-            // Are there remaining lives?
-            // No: You lose, print lost message, ask if play again
-
-            // Is the word length correct?
-            // No: Remind the word length
-
-            // Is word an isogram?
-            // No: you need to give an isogram
-
-            // Calculate hints based on Input 
-            // and give feedback to player
-        }
+        ProcessGuess(Input);
     }
 
     // if the game is over, then do something
@@ -73,10 +37,77 @@ void UBullCowCartridge::SetupGame()
     PrintLine(TEXT("Guess the %i letter word"), HiddenWord.Len()); // TODO: Remove magic number
     PrintLine(TEXT("Let's try to find out the word..."));
     PrintLine(TEXT("You have %i lives remaining"), Lives);
+
+    const TCHAR HW[] = TEXT("cakes");
 }
 
 void UBullCowCartridge::EndGame()
 {
     bGameOver = true;
     PrintLine(TEXT("Game is over\nPress ENTER to play again..."));
+}
+
+void UBullCowCartridge::ProcessGuess(const FString Guess)
+{
+    // TODO
+    // Subtract a life
+
+    // Are there remaining lives?
+    // No: You lose, print lost message, ask if play again
+
+    // Is the word length correct?
+    // No: Remind the word length
+
+    // Is word an isogram?
+    // No: you need to give an isogram
+
+    // Calculate hints based on Input 
+    // and give feedback to player
+
+    if (Guess == HiddenWord)
+    {
+        PrintLine(TEXT("You have guessed correctly"));
+        EndGame();
+        return;
+    }
+
+    if (!IsIsogram(Guess))
+    {
+        PrintLine(TEXT("No repeating letters, guess again"));
+        return;
+    }
+
+    if (HiddenWord.Len() != Guess.Len())
+    {
+        PrintLine(TEXT("The length of the word is incorrect\nLength should be %i"), HiddenWord.Len());
+        return;
+    }
+
+    PrintLine(TEXT("Word is not matching, life lost"));
+    --Lives;
+    
+    if (Lives > 0)
+    {
+        PrintLine(TEXT("%i lives remaining"), Lives);
+    }
+    else
+    {
+        PrintLine(TEXT("You don't have more lives"));
+        EndGame();
+    }
+}
+
+bool UBullCowCartridge::IsIsogram(const FString Word)
+{
+    for (int32 i = 0; i < Word.Len(); ++i)
+    {
+        for (int32 j = i + 1; j < Word.Len(); ++j)
+        {
+            if (Word[i] == Word[j])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
