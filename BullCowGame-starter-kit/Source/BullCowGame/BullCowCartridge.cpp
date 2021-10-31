@@ -30,12 +30,18 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
         }
         else
         {
+            PrintLine(TEXT("%i lives remaining"), --Lives);
             if (HiddenWord.Len() != Input.Len())
             {
                 PrintLine(TEXT("The length of the word is incorrect\nLength should be %i"), HiddenWord.Len());
-                EndGame();
             }
         
+            if (Lives <= 0)
+            {
+                PrintLine(TEXT("You don't have more lives"));
+                EndGame();
+            }
+
             // Subtract a life
 
             // Are there remaining lives?
@@ -60,12 +66,13 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
 void UBullCowCartridge::SetupGame()
 {
     HiddenWord = TEXT("cakes");
-    Lives = 4;
+    Lives = HiddenWord.Len();
     bGameOver = false;
 
     PrintLine(TEXT("This is a Bull Cows Game!"));
     PrintLine(TEXT("Guess the %i letter word"), HiddenWord.Len()); // TODO: Remove magic number
     PrintLine(TEXT("Let's try to find out the word..."));
+    PrintLine(TEXT("You have %i lives remaining"), Lives);
 }
 
 void UBullCowCartridge::EndGame()
